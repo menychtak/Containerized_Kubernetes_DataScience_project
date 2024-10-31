@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+      - name: database
+        image: singlestore/cluster-in-a-box:latest
+        ports:
+        - containerPort: 3306
+        - containerPort: 8080
+        env:
+        - name: LICENSE_KEY
+          value: your_license_key
