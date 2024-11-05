@@ -16,9 +16,10 @@ services:
       - database
 
   database:
-    image: singlestore/cluster-in-a-box:latest
+    build: ./database
     ports:
-      - "3306:3306"
-      - "8080:8080"
+      - "5432:5432"
     environment:
-      - LICENSE_KEY=your_license_key
+      POSTGRES_DB: todo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres

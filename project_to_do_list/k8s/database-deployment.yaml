@@ -14,10 +14,13 @@ spec:
     spec:
       containers:
       - name: database
-        image: singlestore/cluster-in-a-box:latest
+        image: postgres:alpine
         ports:
-        - containerPort: 3306
-        - containerPort: 8080
+        - containerPort: 5432
         env:
-        - name: LICENSE_KEY
-          value: your_license_key
+        - name: POSTGRES_DB
+          value: todo
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: postgres

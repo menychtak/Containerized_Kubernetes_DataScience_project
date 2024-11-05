@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <ul id="tasks"></ul>
+    <script>
+        fetch('http://backend:5000/tasks')
+            .then(response => response.json())
+            .then(data => {
+                const tasks = document.getElementById('tasks');
+                data.forEach(task => {
+                    const li = document.createElement('li');
+                    li.textContent = task;
+                    tasks.appendChild(li);
+                });
+            });
+    </script>
+</body>
+</html>

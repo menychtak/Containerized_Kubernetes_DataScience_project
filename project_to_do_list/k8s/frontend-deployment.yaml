@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-deployment
+  name: frontend-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: backend
+      app: frontend
   template:
     metadata:
       labels:
-        app: backend
+        app: frontend
     spec:
       containers:
-      - name: backend
-        image: your-backend-image
+      - name: frontend
+        image: menychtak/frontend:latest
         ports:
-        - containerPort: 5000
+        - containerPort: 80
