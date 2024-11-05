@@ -2,21 +2,21 @@ version: '3.8'
 
 services:
   frontend:
-    build: ./frontend
+    build: ./project_to_do_list/frontend
     ports:
       - "80:80"
     depends_on:
       - backend
 
   backend:
-    build: ./backend
+    build: ./project_to_do_list/backend
     ports:
       - "5000:5000"
     depends_on:
       - database
 
   database:
-    build: ./database
+    build: ./project_to_do_list/database
     ports:
       - "5432:5432"
     environment:
