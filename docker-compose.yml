@@ -7,6 +7,8 @@ services:
       - "80:80"
     depends_on:
       - backend
+    networks:
+    - docker_net
 
   backend:
     build: ./project_to_do_list/backend
@@ -14,6 +16,8 @@ services:
       - "5000:5000"
     depends_on:
       - database
+    networks:
+    - docker_net
 
   database:
     build: ./project_to_do_list/database
@@ -23,3 +27,16 @@ services:
       POSTGRES_DB: todo
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    volumes:
+    - ./project_to_do_list/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+    - docker_net
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+networks:
+  docker_net:
+    driver: bridge
