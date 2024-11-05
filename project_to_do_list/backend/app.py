@@ -25,6 +25,10 @@ def get_tasks():
     except Exception as e:
         print(f"Error fetching tasks: {e}")
 
+@app.route('/', methods=['GET'])
+def home():
+    return "Welcome to the Task API!"
+
 @app.route('/tasks', methods=['GET'])
 def tasks():
     return jsonify(get_tasks())
