@@ -1,8 +1,10 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 import psycopg2
 from psycopg2 import OperationalError
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS
 
 def get_tasks():
     try:
@@ -10,7 +12,7 @@ def get_tasks():
             dbname="todo",
             user="postgres",
             password="postgres",
-            host="database"
+            host="database"  # Make sure the database service is named 'database' in Kubernetes
         )
         cur = conn.cursor()
         cur.execute("SELECT task FROM tasks")
@@ -53,7 +55,7 @@ def tasks():
 
 @app.route('/tasks/add', methods=['POST'])
 def add_task():
-    task_data = request.json  # Get the JSON data from the request
+    task_data = request.json
     task = task_data.get('task')
     if task:
         add_task_to_db(task)
