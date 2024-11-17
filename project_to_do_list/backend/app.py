@@ -55,13 +55,16 @@ def home():
 def tasks():
     return jsonify(get_tasks())
 
-# Updated /tasks/add route to handle both GET and POST
 @app.route('/tasks/add', methods=['GET', 'POST'])
 def add_task():
     if request.method == 'POST':
         # Handle POST request to add a task
-        task_data = request.json
-        task = task_data.get('task')
+        if request.is_json:
+            task_data = request.json
+            task = task_data.get('task')
+        else:
+            task = request.form.get('task')  # Handle form submissions as well
+        
         if task:
             add_task_to_db(task)
             return jsonify({'message': 'Task added successfully'}), 201
@@ -86,3 +89,6 @@ def add_task():
     </body>
     </html>
     ''')
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
