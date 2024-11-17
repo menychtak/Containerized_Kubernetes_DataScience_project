@@ -1,6 +1,14 @@
 CREATE TABLE IF NOT EXISTS tasks (
     id SERIAL PRIMARY KEY,
-    task TEXT NOT NULL
+    task TEXT NOT NULL UNIQUE,  -- Ensure each task description is unique
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Automatically set the creation timestamp
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Automatically set the update timestamp
+    completed BOOLEAN DEFAULT FALSE  -- Track task completion status
 );
 
-INSERT INTO tasks (task) VALUES ('Task 1'), ('Task 2'), ('Task 3');
+-- Insert sample tasks with current timestamps
+INSERT INTO tasks (task) 
+VALUES 
+    ('Create containers'), 
+    ('Use Kubernetes'), 
+    ('Complete docker project');
