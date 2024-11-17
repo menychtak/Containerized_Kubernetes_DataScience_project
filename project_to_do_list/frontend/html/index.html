@@ -1,23 +1,99 @@
-document.getElementById('addTaskBtn').addEventListener('click', () => {
-    const task = prompt("Enter a new task:");
-    if (task) {
-        fetch('http://backend:5000/tasks/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ task: task })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message === 'Task added successfully') {
-                const li = document.createElement('li');
-                li.textContent = task;
-                li.addEventListener('click', () => {
-                    li.classList.toggle('completed');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        /* Styling for the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #fff;
+            padding: 15px;
+            margin: 5px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        li.completed {
+            text-decoration: line-through;
+            background-color: #d3ffd3;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <ul id="tasks"></ul>
+    <button id="addTaskBtn">Add New Task</button>
+    <script>
+        // Fetch tasks from the backend and display them
+        fetch('http://backend:5000/tasks')
+            .then(response => response.json())
+            .then(data => {
+                const tasks = document.getElementById('tasks');
+                data.forEach(task => {
+                    const li = document.createElement('li');
+                    li.textContent = task;
+                    li.addEventListener('click', () => {
+                        li.classList.toggle('completed');
+                    });
+                    tasks.appendChild(li);
                 });
-                document.getElementById('tasks').appendChild(li);
+            });
+
+        // Add a new task to the backend
+        document.getElementById('addTaskBtn').addEventListener('click', () => {
+            const task = prompt("Enter a new task:");
+            if (task) {
+                fetch('http://backend:5000/tasks/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ task: task })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Task added successfully') {
+                        const li = document.createElement('li');
+                        li.textContent = task;
+                        li.addEventListener('click', () => {
+                            li.classList.toggle('completed');
+                        });
+                        document.getElementById('tasks').appendChild(li);
+                    } else {
+                        alert('Failed to add task');
+                    }
+                })
+                .catch(err => alert('Error adding task: ' + err));
             }
         });
-    }
-});
+    </script>
+</body>
+</html>
