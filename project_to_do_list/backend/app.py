@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template_string
 from flask_cors import CORS
 import psycopg2
 from psycopg2 import OperationalError
@@ -6,13 +6,14 @@ from psycopg2 import OperationalError
 app = Flask(__name__)
 CORS(app)  # Enable CORS
 
+# Function to connect and get tasks
 def get_tasks():
     try:
         conn = psycopg2.connect(
             dbname="todo",
             user="postgres",
             password="postgres",
-            host="database"  # Make sure the database service is named 'database' in Kubernetes
+            host="database"
         )
         cur = conn.cursor()
         cur.execute("SELECT task FROM tasks")
@@ -27,6 +28,7 @@ def get_tasks():
         print(f"Error fetching tasks: {e}")
         return []
 
+# Function to add a task to the database
 def add_task_to_db(task):
     try:
         conn = psycopg2.connect(
@@ -53,14 +55,34 @@ def home():
 def tasks():
     return jsonify(get_tasks())
 
-@app.route('/tasks/add', methods=['POST'])
+# Updated /tasks/add route to handle both GET and POST
+@app.route('/tasks/add', methods=['GET', 'POST'])
 def add_task():
-    task_data = request.json
-    task = task_data.get('task')
-    if task:
-        add_task_to_db(task)
-        return jsonify({'message': 'Task added successfully'}), 201
-    return jsonify({'message': 'Task is required'}), 400
+    if request.method == 'POST':
+        # Handle POST request to add a task
+        task_data = request.json
+        task = task_data.get('task')
+        if task:
+            add_task_to_db(task)
+            return jsonify({'message': 'Task added successfully'}), 201
+        return jsonify({'message': 'Task is required'}), 400
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    # Handle GET request to show a form in the browser
+    return render_template_string('''
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add Task</title>
+    </head>
+    <body>
+        <h1>Add a New Task</h1>
+        <form action="/tasks/add" method="POST">
+            <label for="task">Task:</label><br>
+            <input type="text" id="task" name="task"><br><br>
+            <input type="submit" value="Add Task">
+        </form>
+    </body>
+    </html>
+    ''')
