@@ -21,6 +21,8 @@
         ul {
             list-style-type: none;
             padding: 0;
+            margin: 20px auto;
+            max-width: 300px;
         }
         li {
             background-color: #fff;
@@ -35,12 +37,13 @@
             background-color: #d3ffd3;
         }
         button {
-            padding: 10px;
+            padding: 10px 20px;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 20px;
         }
         button:hover {
             background-color: #45a049;
@@ -51,9 +54,10 @@
     <h1>To-Do List</h1>
     <ul id="tasks"></ul>
     <button id="addTaskBtn">Add New Task</button>
+
     <script>
         // Fetch tasks from the backend and display them
-        fetch('http://backend:5000/tasks')
+        fetch('/tasks')
             .then(response => response.json())
             .then(data => {
                 const tasks = document.getElementById('tasks');
@@ -65,13 +69,14 @@
                     });
                     tasks.appendChild(li);
                 });
-            });
+            })
+            .catch(err => console.error('Error fetching tasks:', err));
 
         // Add a new task to the backend
         document.getElementById('addTaskBtn').addEventListener('click', () => {
             const task = prompt("Enter a new task:");
             if (task) {
-                fetch('http://backend:5000/tasks/add', {
+                fetch('/tasks/add', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
