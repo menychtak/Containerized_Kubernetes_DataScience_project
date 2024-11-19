@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: menychtak/frontend:latest
+        image: menychtak/todo_list_frontend:latest
         ports:
         - containerPort: 80
