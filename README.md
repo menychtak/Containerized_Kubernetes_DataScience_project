@@ -143,6 +143,11 @@ kubectl get services
   ```bash
   minikube ip
   ```
+  - Get the NodePort:
+
+  ```bash
+  kubectl get svc
+  ```
 
 - Use the Minikube IP and the NodePort of the frontend service to access the application:
 
