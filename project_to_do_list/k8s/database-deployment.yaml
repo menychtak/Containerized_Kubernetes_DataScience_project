@@ -1,3 +1,25 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-init-config
+data:
+  init.sql: |
+    CREATE TABLE tasks (
+        id SERIAL PRIMARY KEY,
+        task TEXT NOT NULL
+    );
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,3 +46,16 @@ spec:
           value: postgres
         - name: POSTGRES_PASSWORD
           value: postgres
+        volumeMounts:
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d/init.sql
+          subPath: init.sql
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: init-script
+        configMap:
+          name: database-init-config
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: postgres-pvc
