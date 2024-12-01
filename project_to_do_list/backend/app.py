@@ -13,8 +13,9 @@ def get_tasks():
             dbname="todo",
             user="postgres",
             password="postgres",
-            host="database-service",
-            port=5432
+            # host="database",  # Use this for Docker Compose
+            host="database-service", # Use this for Kubernetes
+            port=5432 # Use this for Kubernetes
         )
         cur = conn.cursor()
         cur.execute("SELECT task FROM tasks")
