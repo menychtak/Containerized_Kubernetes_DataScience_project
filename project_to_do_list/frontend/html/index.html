@@ -57,7 +57,7 @@
 
     <script>
         // Fetch tasks from the backend and display them
-        const backendUrl = 'http://192.168.49.2:31198'; // use for Kubernetes
+        const backendUrl = 'http://192.168.49.2:30406'; // use for Kubernetes
         fetch(`${backendUrl}/tasks`) // use for Kubernetes
         //fetch('/tasks') // use for Docker Compose
             .then(response => response.json())
@@ -79,7 +79,8 @@
             const task = prompt("Enter a new task:");
             if (task) {
                 //fetch('/tasks/add', { // use for Docker Compose
-                // use below for Kubernetes
+                // use below 2 lines for Kubernetes
+                const backendUrl = 'http://192.168.49.2:30406';
                 fetch(`${backendUrl}/tasks/add`, { 
                     method: 'POST',
                     headers: {
