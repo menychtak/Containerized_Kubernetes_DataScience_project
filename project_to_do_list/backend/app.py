@@ -13,7 +13,8 @@ def get_tasks():
             dbname="todo",
             user="postgres",
             password="postgres",
-            host="database"
+            host="database-service",
+            port=5432
         )
         cur = conn.cursor()
         cur.execute("SELECT task FROM tasks")
