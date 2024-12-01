@@ -20,6 +20,7 @@ def get_tasks():
         cur = conn.cursor()
         cur.execute("SELECT task FROM tasks")
         tasks = cur.fetchall()
+        print(f"DEBUG: Fetched tasks from database: {tasks}")  # Debug log
         cur.close()
         conn.close()
         return [task[0] for task in tasks]
