@@ -3,11 +3,14 @@
 
 This project is a containerized application built with Flask for managing a simple to-do list, integrated with a PostgreSQL database. It includes a frontend interface to interact with the backend. You can run this project using either **Docker Compose** or **Kubernetes**. The current setup is initialized to run with **Kubernetes**, but instructions for Docker Compose are also provided.
 
+**Kubernetes** implementation also include a frontend container.
+**Docker Compose** frontend container is not yet developed.
+
 ## Features
 
 - Add tasks to a to-do list
 - View existing tasks
-- Simple frontend to interact with the backend
+- Simple frontend to interact with the backend -- Only for Kuberenetes 
 - PostgreSQL integration for persistent storage
 - Containerized using Docker
 - Kubernetes support for deployment
@@ -62,14 +65,6 @@ sudo docker network create docker_net
 ### 3. Run the Application using Docker-Compose
 First you need to uncomment the lines in frontend/index.html and backend/app.py that state to be used with docker-compose.
 Don't forget to comment those that state to be used with Kubernetes. Apply thosee changes and then do the below:
-
-Use Docker Compose to run the entire stack (frontend, backend, database):
-
-```bash
-sudo docker-compose up --build -d
-```
-
-### 3. Run the Application
 
 Use Docker Compose to run the entire stack (frontend, backend, database):
 
@@ -188,6 +183,7 @@ minikube delete
 Important Notes
 
     This repository is not fully finished. Updates will be made to:
+        Complete frontend implementation for use with docker-compose
         Remove hardcoded values.
         Improve configurability across environments.
         Add more robust error handling and logging.
