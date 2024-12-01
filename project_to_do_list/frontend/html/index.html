@@ -57,7 +57,9 @@
 
     <script>
         // Fetch tasks from the backend and display them
-        fetch('/tasks')
+        const backendUrl = 'http://backend-service:5000'; // use for Kubernetes
+        fetch(`${backendUrl}/tasks`) // use for Kubernetes
+        //fetch('/tasks') // use for Docker Compose
             .then(response => response.json())
             .then(data => {
                 const tasks = document.getElementById('tasks');
@@ -76,7 +78,9 @@
         document.getElementById('addTaskBtn').addEventListener('click', () => {
             const task = prompt("Enter a new task:");
             if (task) {
-                fetch('/tasks/add', {
+                //fetch('/tasks/add', { // use for Docker Compose
+                // use below for Kubernetes
+                fetch(`${backendUrl}/tasks/add`, { 
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
