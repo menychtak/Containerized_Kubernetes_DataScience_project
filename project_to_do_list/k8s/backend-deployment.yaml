@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: menychtak/todo_list_backend:latest
+        image: menychtak/todo_list_backend_kbernetes
         ports:
         - containerPort: 5000
         env:
