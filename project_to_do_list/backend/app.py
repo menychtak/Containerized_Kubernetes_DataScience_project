@@ -37,7 +37,9 @@ def add_task_to_db(task):
             dbname="todo",
             user="postgres",
             password="postgres",
-            host="database"
+            # host="database", # Use this for Docker Compose
+            host="database-service", # Use this for Kubernetes
+            port=5432 # Use this for Kubernetes
         )
         cur = conn.cursor()
         cur.execute("INSERT INTO tasks (task) VALUES (%s)", (task,))
