@@ -1,15 +1,6 @@
 version: '3.8'
 
 services:
-  frontend:
-    build: ./project_to_do_list/frontend
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
-    networks:
-    - docker_net
-
   backend:
     build: ./project_to_do_list/backend
     ports:
